@@ -13,33 +13,36 @@ import java.util.Optional;
 @RequestMapping("/item")
 @CrossOrigin
 public class itemController {
+
     @Autowired
     private itemService itemService;
 
+    @Autowired
+    private itemRepository itemRepository;
+
     @PostMapping("/add")
-    public String add(@RequestBody item item){
-        Optional<item> existingItem = itemService.findById(item.getId());
+    public String add(@RequestBody item item) {
         itemService.saveItem(item);
         return "New item is added";
     }
 
     @GetMapping("/getAll")
-    public List<item> getAllItem(){
+    public List<item> getAllItem() {
         return itemService.getAllItems();
     }
 
     @GetMapping("/{id}")
-        Optional<item> getUserById(@PathVariable int id){
+    public Optional<item> getItemById(@PathVariable int id) {
         return itemService.findById(id);
     }
 
-    private itemRepository itemRepository;
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    public String deleteItem(@PathVariable Long id) {
         itemRepository.deleteById(id);
         return "Item with id " + id + " has been deleted successfully.";
     }
 
+    // Нова функція для оновлення товару
     @PutMapping("/{id}")
     public String updateItem(@PathVariable Long id, @RequestBody item updatedItem) {
         Optional<item> existingItem = itemService.findById(id.intValue());
@@ -50,4 +53,5 @@ public class itemController {
         } else {
             return "Item not found!";
         }
+    }
 }
