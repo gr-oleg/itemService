@@ -39,4 +39,15 @@ public class itemController {
         itemRepository.deleteById(id);
         return "Item with id " + id + " has been deleted successfully.";
     }
+
+    @PutMapping("/{id}")
+    public String updateItem(@PathVariable Long id, @RequestBody item updatedItem) {
+        Optional<item> existingItem = itemService.findById(id.intValue());
+        if (existingItem.isPresent()) {
+            updatedItem.setId(id.intValue());
+            itemService.saveItem(updatedItem);
+            return "Item with id " + id + " has been updated.";
+        } else {
+            return "Item not found!";
+        }
 }
